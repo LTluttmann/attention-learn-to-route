@@ -11,7 +11,7 @@ from tensorboard_logger import Logger as TbLogger
 from nets.critic_network import CriticNetwork
 from options import get_options
 from train import train_epoch, validate, get_inner_model
-from reinforce_baselines import NoBaseline, ExponentialBaseline, CriticBaseline, RolloutBaseline, WarmupBaseline
+from reinforce_baselines import NoBaseline, ExponentialBaseline, CriticBaseline, RolloutBaseline, WarmupBaseline, WarmupBaselineClipped
 from nets.attention_model import AttentionModel
 from nets.pointer_network import PointerNetwork, CriticNetworkLSTM
 from utils import torch_load_cpu, load_problem
@@ -108,6 +108,8 @@ def run(opts):
 
     if opts.bl_warmup_epochs > 0:
         baseline = WarmupBaseline(baseline, opts.bl_warmup_epochs, warmup_exp_beta=opts.exp_beta)
+    if opts.bl_warmup_clipped_epochs > 0:
+        baseline = WarmupBaselineClipped(baseline, opts.bl_warmup_epochs, warmup_exp_beta=opts.exp_beta)
 
     # Load baseline from data, make sure script is called with same type of baseline
     if 'baseline' in load_data:

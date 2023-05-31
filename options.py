@@ -11,8 +11,8 @@ def get_options(args=None):
     # Data
     parser.add_argument('--problem', default='tsp', help="The problem to solve, default 'tsp'")
     parser.add_argument('--graph_size', type=int, default=20, help="The size of the problem graph")
-    parser.add_argument('--batch_size', type=int, default=512, help='Number of instances per batch during training')
-    parser.add_argument('--epoch_size', type=int, default=1280000, help='Number of instances per epoch during training')
+    parser.add_argument('--batch_size', type=int, default=256, help='Number of instances per batch during training')
+    parser.add_argument('--epoch_size', type=int, default=1280, help='Number of instances per epoch during training')
     parser.add_argument('--val_size', type=int, default=10000,
                         help='Number of instances used for reporting validation performance')
     parser.add_argument('--val_dataset', type=str, default=None, help='Dataset file to use for validation')
@@ -40,11 +40,14 @@ def get_options(args=None):
     parser.add_argument('--no_cuda', action='store_true', help='Disable CUDA')
     parser.add_argument('--exp_beta', type=float, default=0.8,
                         help='Exponential moving average baseline decay (default 0.8)')
-    parser.add_argument('--baseline', default=None,
+    parser.add_argument('--baseline', default="rollout",
                         help="Baseline to use: 'rollout', 'critic' or 'exponential'. Defaults to no baseline.")
     parser.add_argument('--bl_alpha', type=float, default=0.05,
                         help='Significance in the t-test for updating rollout baseline')
     parser.add_argument('--bl_warmup_epochs', type=int, default=None,
+                        help='Number of epochs to warmup the baseline, default None means 1 for rollout (exponential '
+                             'used for warmup phase), 0 otherwise. Can only be used with rollout baseline.')
+    parser.add_argument('--bl_warmup_clipped_epochs', type=int, default=None,
                         help='Number of epochs to warmup the baseline, default None means 1 for rollout (exponential '
                              'used for warmup phase), 0 otherwise. Can only be used with rollout baseline.')
     parser.add_argument('--eval_batch_size', type=int, default=1024,
@@ -83,5 +86,6 @@ def get_options(args=None):
     if opts.bl_warmup_epochs is None:
         opts.bl_warmup_epochs = 1 if opts.baseline == 'rollout' else 0
     assert (opts.bl_warmup_epochs == 0) or (opts.baseline == 'rollout')
+    assert (opts.bl_warmup_epochs is None) or (opts.bl_warmup_clipped_epochs is None)
     assert opts.epoch_size % opts.batch_size == 0, "Epoch size must be integer multiple of batch size!"
     return opts
