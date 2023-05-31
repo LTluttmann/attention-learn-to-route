@@ -19,7 +19,7 @@ def log_values(cost, grad_norms, epoch, batch_id, step,
         tb_logger.log_value('grad_norm_clipped', grad_norms_clipped[0], step)
 
         tb_logger.log_value('bl_loss', bl_loss, step)
-        tb_logger.log_value('bl_val', bl_val.item(), step)
+        tb_logger.log_value('bl_val', bl_val.mean().item(), step)
 
         if opts.baseline == 'critic':
             
