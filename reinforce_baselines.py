@@ -29,7 +29,6 @@ class Baseline(object):
         pass
 
 
-
 class WarmupBaseline(Baseline):
 
     def __init__(self, baseline, n_epochs=1, warmup_exp_beta=0.8, ):
