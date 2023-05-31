@@ -109,7 +109,7 @@ def run(opts):
     if opts.bl_warmup_epochs > 0:
         baseline = WarmupBaseline(baseline, opts.bl_warmup_epochs, warmup_exp_beta=opts.exp_beta)
     if opts.bl_warmup_clipped_epochs > 0:
-        baseline = WarmupBaselineClipped(baseline, opts.bl_warmup_epochs, warmup_exp_beta=opts.exp_beta)
+        baseline = WarmupBaselineClipped(baseline, opts.bl_warmup_clipped_epochs, warmup_exp_beta=opts.exp_beta)
 
     # Load baseline from data, make sure script is called with same type of baseline
     if 'baseline' in load_data:
