@@ -88,6 +88,6 @@ def get_options(args=None):
     if opts.bl_warmup_clipped_epochs is None:
         opts.bl_warmup_clipped_epochs = 1 if opts.baseline == 'rollout' else 0
     assert (opts.bl_warmup_epochs == 0) or (opts.baseline == 'rollout')
-    assert (opts.bl_warmup_epochs is None) or (opts.bl_warmup_clipped_epochs is None)
+    assert (opts.bl_warmup_epochs == 0) or (opts.bl_warmup_clipped_epochs == 0)
     assert opts.epoch_size % opts.batch_size == 0, "Epoch size must be integer multiple of batch size!"
     return opts
